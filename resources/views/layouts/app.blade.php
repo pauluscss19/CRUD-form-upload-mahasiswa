@@ -3,111 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Sistem Manajemen Proyek')</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>@yield('title', 'Manajemen Proyek')</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="/">Sistem Proyek</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('mahasiswas.index') }}">Mahasiswa</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('dosens.index') }}">Dosen</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('proyeks.index') }}">Proyek</a>
-                    </li>
-                </ul>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-blue-600 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="/" class="text-white text-xl font-bold">
+                            <i class="fas fa-graduation-cap mr-2"></i>Sistem Proyek
+                        </a>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="{{ route('mahasiswas.index') }}" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">
+                            <i class="fas fa-user-graduate mr-2"></i>Mahasiswa
+                        </a>
+                        <a href="{{ route('dosens.index') }}" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">
+                            <i class="fas fa-chalkboard-teacher mr-2"></i>Dosen
+                        </a>
+                        <a href="{{ route('proyeks.index') }}" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">
+                            <i class="fas fa-project-diagram mr-2"></i>Proyek
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
 
-    <div class="container mt-4">
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
-
-        @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
-
-        @yield('content')
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
-
-{{-- resources/views/mahasiswas/index.blade.php --}}
-@extends('layouts.app')
-
-@section('title', 'Daftar Mahasiswa')
-
-@section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Daftar Mahasiswa</h2>
-    <a href="{{ route('mahasiswas.create') }}" class="btn btn-primary">Tambah Mahasiswa</a>
-</div>
-
-<div class="card">
-    <div class="card-body">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Foto</th>
-                    <th>NIM</th>
-                    <th>Nama</th>
-                    <th>Email</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($mahasiswas as $mahasiswa)
-                <tr>
-                    <td>
-                        @if($mahasiswa->foto)
-                            <img src="{{ Storage::url($mahasiswa->foto) }}" alt="Foto" width="50" class="rounded">
-                        @else
-                            <span class="text-muted">-</span>
-                        @endif
-                    </td>
-                    <td>{{ $mahasiswa->nim }}</td>
-                    <td>{{ $mahasiswa->nama }}</td>
-                    <td>{{ $mahasiswa->email }}</td>
-                    <td>
-                        <a href="{{ route('mahasiswas.show', $mahasiswa) }}" class="btn btn-sm btn-info">Lihat</a>
-                        <a href="{{ route('mahasiswas.edit', $mahasiswa) }}" class="btn btn-sm btn-warning">Edit</a>
-                        <form action="{{ route('mahasiswas.destroy', $mahasiswa) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
-                        </form>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="5" class="text-center">Belum ada data mahasiswa</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
-        
-        <div class="mt-3">
-            {{ $mahasiswas->links() }}
+    <!-- Alert Messages -->
+    @if(session('success'))
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            <span class="block sm:inline">{{ session('success') }}</span>
         </div>
     </div>
-</div>
-@endsection
+    @endif
+
+    @if(session('error'))
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <span class="block sm:inline">{{ session('error') }}</span>
+        </div>
+    </div>
+    @endif
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        @yield('content')
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <p class="text-center text-sm">&copy; {{ date('Y') }} Sistem Manajemen Proyek Mahasiswa</p>
+        </div>
+    </footer>
+</body>
+</html>
