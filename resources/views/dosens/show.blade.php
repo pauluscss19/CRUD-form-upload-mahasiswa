@@ -1,119 +1,101 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Proyek')
+@section('title', 'Detail Dosen')
 
 @section('content')
-<div class="mb-6">
+<div class="mb-6 flex justify-between items-center">
     <h1 class="text-3xl font-bold text-gray-800">
-        <i class="fas fa-plus-circle text-purple-600"></i> Tambah Proyek Baru
+        <i class="fas fa-user-tie text-green-600"></i> Detail Dosen
     </h1>
+    <div class="space-x-2">
+        <a href="{{ route('dosens.edit', $dosen) }}" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition">
+            <i class="fas fa-edit mr-2"></i>Edit
+        </a>
+        <a href="{{ route('dosens.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition">
+            <i class="fas fa-arrow-left mr-2"></i>Kembali
+        </a>
+    </div>
 </div>
 
-<div class="bg-white rounded-lg shadow-lg p-6">
-    <form action="{{ route('proyeks.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        
-        <div class="mb-4">
-            <label for="judul" class="block text-gray-700 font-semibold mb-2">
-                Judul Proyek <span class="text-red-500">*</span>
-            </label>
-            <input type="text" name="judul" id="judul" value="{{ old('judul') }}" 
-                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 @error('judul') border-red-500 @enderror"
-                   required>
-            @error('judul')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div class="mb-4">
-            <label for="deskripsi" class="block text-gray-700 font-semibold mb-2">
-                Deskripsi <span class="text-red-500">*</span>
-            </label>
-            <textarea name="deskripsi" id="deskripsi" rows="5" 
-                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 @error('deskripsi') border-red-500 @enderror"
-                      required>{{ old('deskripsi') }}</textarea>
-            @error('deskripsi')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
-                <label for="mahasiswa_id" class="block text-gray-700 font-semibold mb-2">
-                    Mahasiswa <span class="text-red-500">*</span>
-                </label>
-                <select name="mahasiswa_id" id="mahasiswa_id" 
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 @error('mahasiswa_id') border-red-500 @enderror"
-                        required>
-                    <option value="">-- Pilih Mahasiswa --</option>
-                    @foreach($mahasiswas as $mahasiswa)
-                        <option value="{{ $mahasiswa->id }}" {{ old('mahasiswa_id') == $mahasiswa->id ? 'selected' : '' }}>
-                            {{ $mahasiswa->nama }} ({{ $mahasiswa->nim }})
-                        </option>
-                    @endforeach
-                </select>
-                @error('mahasiswa_id')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Profile Card -->
+    <div class="lg:col-span-1">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="h-32 w-32 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-user-tie text-green-600 text-5xl"></i>
             </div>
-
-            <div>
-                <label for="dosen_id" class="block text-gray-700 font-semibold mb-2">
-                    Dosen Pembimbing <span class="text-red-500">*</span>
-                </label>
-                <select name="dosen_id" id="dosen_id" 
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 @error('dosen_id') border-red-500 @enderror"
-                        required>
-                    <option value="">-- Pilih Dosen --</option>
-                    @foreach($dosens as $dosen)
-                        <option value="{{ $dosen->id }}" {{ old('dosen_id') == $dosen->id ? 'selected' : '' }}>
-                            {{ $dosen->nama }} - {{ $dosen->bidang_keahlian }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('dosen_id')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
+            <h2 class="text-2xl font-bold text-gray-800 text-center mb-4">{{ $dosen->nama }}</h2>
+            
+            <div class="space-y-3">
+                <div class="flex items-start">
+                    <i class="fas fa-id-card text-gray-500 mt-1 mr-3 w-5"></i>
+                    <div>
+                        <p class="text-sm text-gray-500">NIP</p>
+                        <p class="font-semibold text-gray-800">{{ $dosen->nip }}</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <i class="fas fa-envelope text-gray-500 mt-1 mr-3 w-5"></i>
+                    <div>
+                        <p class="text-sm text-gray-500">Email</p>
+                        <p class="font-semibold text-gray-800">{{ $dosen->email }}</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <i class="fas fa-book text-gray-500 mt-1 mr-3 w-5"></i>
+                    <div>
+                        <p class="text-sm text-gray-500">Bidang Keahlian</p>
+                        <p class="font-semibold text-gray-800">{{ $dosen->bidang_keahlian }}</p>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
 
-        <div class="mb-4">
-            <label for="status" class="block text-gray-700 font-semibold mb-2">
-                Status <span class="text-red-500">*</span>
-            </label>
-            <select name="status" id="status" 
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 @error('status') border-red-500 @enderror"
-                    required>
-                <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Draft</option>
-                <option value="diajukan" {{ old('status') == 'diajukan' ? 'selected' : '' }}>Diajukan</option>
-                <option value="disetujui" {{ old('status') == 'disetujui' ? 'selected' : '' }}>Disetujui</option>
-                <option value="ditolak" {{ old('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
-            </select>
-            @error('status')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
+    <!-- Projects List -->
+    <div class="lg:col-span-2">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">
+                <i class="fas fa-project-diagram text-purple-600 mr-2"></i>Proyek yang Dibimbing
+            </h3>
+            
+            @if($dosen->proyeks->count() > 0)
+                <div class="space-y-4">
+                    @foreach($dosen->proyeks as $proyek)
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="text-lg font-semibold text-gray-800">{{ $proyek->judul }}</h4>
+                                <span class="px-3 py-1 rounded-full text-sm font-semibold
+                                    @if($proyek->status == 'disetujui') bg-green-100 text-green-800
+                                    @elseif($proyek->status == 'diajukan') bg-blue-100 text-blue-800
+                                    @elseif($proyek->status == 'ditolak') bg-red-100 text-red-800
+                                    @else bg-gray-100 text-gray-800
+                                    @endif">
+                                    {{ ucfirst($proyek->status) }}
+                                </span>
+                            </div>
+                            <p class="text-gray-600 text-sm mb-2">{{ Str::limit($proyek->deskripsi, 150) }}</p>
+                            <div class="flex justify-between items-center">
+                                <p class="text-sm text-gray-500">
+                                    <i class="fas fa-user-graduate mr-1"></i>
+                                    Mahasiswa: <strong>{{ $proyek->mahasiswa->nama }}</strong> ({{ $proyek->mahasiswa->nim }})
+                                </p>
+                                <a href="{{ route('proyeks.show', $proyek) }}" class="text-blue-600 hover:text-blue-800 text-sm">
+                                    Lihat Detail <i class="fas fa-arrow-right ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="text-center py-8 text-gray-500">
+                    <i class="fas fa-folder-open text-4xl mb-3"></i>
+                    <p>Belum ada proyek yang dibimbing</p>
+                </div>
+            @endif
         </div>
-
-        <div class="mb-6">
-            <label for="dokumen" class="block text-gray-700 font-semibold mb-2">
-                Dokumen Proyek
-            </label>
-            <input type="file" name="dokumen" id="dokumen" accept=".pdf,.docx"
-                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 @error('dokumen') border-red-500 @enderror">
-            <p class="text-gray-500 text-sm mt-1">Format: PDF, DOCX. Maksimal 2MB</p>
-            @error('dokumen')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div class="flex justify-end space-x-4">
-            <a href="{{ route('proyeks.index') }}" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition">
-                <i class="fas fa-times mr-2"></i>Batal
-            </a>
-            <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">
-                <i class="fas fa-save mr-2"></i>Simpan
-            </button>
-        </div>
-    </form>
+    </div>
 </div>
 @endsection
